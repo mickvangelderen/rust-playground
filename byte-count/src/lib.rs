@@ -1,10 +1,22 @@
 pub fn byte_count(input: &[u8]) -> [u32; 0x100] {
     let mut output = [0u32; 0x100];
     for &byte in input.iter() {
+        // A bound check should not be necessary since byte is a u8 and output.len() equals u8::max_value() + 1. 
         output[byte as usize] = output[byte as usize] + 1;
     }
     output
 }
+
+// Byte count can also be implemented using `fold`. 
+// The following implementation makes me wonder if the accumulator gets copied every time.
+pub fn byte_count_fold(input: &[u8]) -> [u32; 0x100] {
+    input.iter().fold([0u32; 0x100], |mut counts, &byte| {
+        counts[byte as usize] = counts[byte as usize] + 1;
+        counts
+    })
+}
+
+// Another question: Should `byte_count` return a statically allocated array or a dynamic vector? Is there a way to let the user choose?
 
 #[cfg(test)]
 mod tests {

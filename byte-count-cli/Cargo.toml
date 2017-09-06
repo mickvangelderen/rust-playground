@@ -1,0 +1,7 @@
+[package]
+name = "byte-count-cli"
+version = "0.1.0"
+authors = ["Mick van Gelderen <mickvangelderen@gmail.com>"]
+
+[dependencies]
+byte-count = { path = "../byte-count" }

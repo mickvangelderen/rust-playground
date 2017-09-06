@@ -1,0 +1,11 @@
+[root]
+name = "byte-count-cli"
+version = "0.1.0"
+dependencies = [
+ "byte-count 0.1.0",
+]
+
+[[package]]
+name = "byte-count"
+version = "0.1.0"
+

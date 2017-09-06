@@ -21,14 +21,14 @@ mod tests {
 
     #[test]
     fn one_minimal_byte() {
-        let mut output = vec![0u32; 0x100];
+        let mut output = [0u32; 0x100];
         output[0x00] = 1;
         assert!(eq(&byte_count(&[ 0u8 ]), &output));
     }
 
     #[test]
     fn one_maximal_byte() {
-        let mut output = vec![0u32; 0x100];
+        let mut output = [0u32; 0x100];
         output[0xff] = 1;
         assert!(eq(&byte_count(&[ 0xffu8 ]), &output));
     }
@@ -36,7 +36,7 @@ mod tests {
     #[test]
     fn multiple_bytes() {
         let input = [ 0u8, 1, 2, 3, 4, 1, 2, 100, 100, 120 ];
-        let mut output = vec![0u32; 0x100];
+        let mut output = [0u32; 0x100];
         output[0] = 1;
         output[1] = 2;
         output[2] = 2;

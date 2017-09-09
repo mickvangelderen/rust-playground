@@ -12,17 +12,11 @@ fn print_byte_count(counts: &[u32; 0x100]) {
 
 fn main() {
     let path = std::env::args_os().skip(1).next().unwrap();
-    let mut file = std::fs::File::open(path).unwrap();
-    let mut buffer = Box::new([0u8; 4096]);
+    let file = std::fs::File::open(path).unwrap();
+    let reader = std::io::BufReader::new(file);
     let mut counts = [0u32; 0x100];
-    loop
-    {
-        let read_count = file.read(&mut * buffer).unwrap();
-        if read_count == 0 { break; }
-        for &byte in &buffer[..read_count]
-        {
-            counts[byte as usize] += 1;
-        }
+    for byte in reader.bytes() {
+        counts[byte.unwrap() as usize] += 1;
     }
 
     print_byte_count(&counts);

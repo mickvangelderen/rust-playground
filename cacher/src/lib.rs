@@ -32,24 +32,39 @@ where T: Fn(&A) -> i32, A: Eq + PartialEq + Hash + Clone {
 mod tests {
     use super::*;
 
-    // TODO: Figure out how to check that the value is not recomputed.
     #[test]
     fn uncached() {
-        let mut cached = Cacher::new(|x| x + 1);
+        let calls = std::cell::RefCell::new(0);
+        let mut cached = Cacher::new(|x| {
+            *calls.borrow_mut() += 1;
+            x + 1
+        });
+        assert_eq!(0, *calls.borrow());
         assert_eq!(2, cached.value(&1));
+        assert_eq!(1, *calls.borrow());
     }
 
     #[test]
     fn cached() {
-        let mut cached = Cacher::new(|x| x + 1);
+        let calls = std::cell::RefCell::new(0);
+        let mut cached = Cacher::new(|x| {
+            *calls.borrow_mut() += 1;
+            x + 1
+        });
         assert_eq!(2, cached.value(&1));
         assert_eq!(2, cached.value(&1));
+        assert_eq!(1, *calls.borrow());
     }
 
     #[test]
     fn cached_different_arg() {
-        let mut cached = Cacher::new(|x| x + 1);
+        let calls = std::cell::RefCell::new(0);
+        let mut cached = Cacher::new(|x| {
+            *calls.borrow_mut() += 1;
+            x + 1
+        });
         assert_eq!(2, cached.value(&1));
         assert_eq!(3, cached.value(&2));
+        assert_eq!(2, *calls.borrow());
     }
 }

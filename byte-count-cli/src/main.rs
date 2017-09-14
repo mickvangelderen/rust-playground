@@ -13,7 +13,7 @@ fn print_byte_count(counts: &[u32; 0x100]) {
 fn main() {
     let path = std::env::args_os().skip(1).next().unwrap();
     let mut file = std::fs::File::open(path).unwrap();
-    let mut buffer = Box::new([0u8; 4096]);
+    let mut buffer = Box::new([0u8; 8*1024]);
     let mut counts = [0u32; 0x100];
     loop
     {
@@ -23,6 +23,9 @@ fn main() {
         {
             counts[byte as usize] += 1;
         }
+
+        // Simulated additional computation time. The threaded version can actually be slightly more performant.
+        // std::thread::sleep(std::time::Duration::from_millis(1));
     }
 
     print_byte_count(&counts);
